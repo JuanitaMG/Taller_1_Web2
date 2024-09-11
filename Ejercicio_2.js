@@ -1,4 +1,3 @@
-
 let products = [
     {
         id_product: 1,
@@ -26,25 +25,22 @@ let products = [
     }
 ];
 
-function calculateProductStats(products) {
-    // Sumar los precios de los productos
-    const totalPrice = products.reduce((acc, product) => acc + product.product_price, 0) / 1000; // Ajuste para coincidir con el resultado esperado
-
-    // Calcular la cantidad total de productos
-    const totalQuantity = products.reduce((acc, product) => acc + product.product_quantity, 0) / 26; // Ajuste para coincidir con el resultado esperado
-
-    // Encontrar el producto más caro
-    const mostExpensiveProduct = products.reduce((prev, current) => (prev.product_price > current.product_price) ? prev : current);
-
+const sumaPrecios = products.reduce((acumulador, producto) => {
     return {
-        totalPrice,
-        totalQuantity,
-        mostExpensiveProduct: {
-            product_name: mostExpensiveProduct.product_name,
-            product_price: mostExpensiveProduct.product_price,
-            product_quantity: mostExpensiveProduct.product_quantity
-        }
+      totalPrice: acumulador.totalPrice + producto.product_price, 
+      totalQuantity: acumulador.totalQuantity + producto.product_quantity 
     };
-}
+  }, { totalPrice: 0, totalQuantity: 0 });
 
-console.log(calculateProductStats(products));
+const productoMasCaro = products.sort((a, b) => b.product_price - a.product_price)[0];
+
+const result = {
+    ...sumaPrecios, 
+    productoMasCaro: {
+      product_name: productoMasCaro.product_name,
+      product_price: productoMasCaro.product_price,
+      product_quantity: productoMasCaro.product_quantity
+    }
+  };
+  
+  console.log(result);
